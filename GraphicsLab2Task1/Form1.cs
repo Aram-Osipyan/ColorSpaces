@@ -113,8 +113,19 @@ namespace GraphicsLab2Task1
 
                     UInt32 pixel1 = (UInt32)(picture1.GetPixel(x, y).ToArgb());
                     UInt32 pixel2 = (UInt32)(picture2.GetPixel(x, y).ToArgb());
-                    uint p = 0xFF000000 | (pixel1 - pixel2);
-                    bmp.SetPixel(x, y, Color.FromArgb((int)p));
+                    float R1 = (float)((pixel1 & 0x00FF0000) >> 16); // красный
+                    float G1 = (float)((pixel1 & 0x0000FF00) >> 8); // зеленый
+                    float B1 = (float)(pixel1 & 0x000000FF); // синий
+
+                    float R2 = (float)((pixel2 & 0x00FF0000) >> 16); // красный
+                    float G2 = (float)((pixel2 & 0x0000FF00) >> 8); // зеленый
+                    float B2 = (float)(pixel2 & 0x000000FF); // синий
+
+                    float R = 10*Math.Abs(R1 - R2);
+                    float G = 10*Math.Abs(G1 - G2);
+                    float B = 10*Math.Abs(B1 - B2);
+                    UInt32 newPixel = 0xFF000000 | ((UInt32)R << 16) | ((UInt32)G << 8) | ((UInt32)B);
+                    bmp.SetPixel(x, y, Color.FromArgb((int)newPixel));
                 }
             }
             return bmp;
